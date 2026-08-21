@@ -1,0 +1,47 @@
+[
+  {
+    "id": "kubelkowe",
+    "name": "Torebki kubełkowe",
+    "slug": "torebki-kubelkowe",
+    "count": 12,
+    "image": "/images/cat-kubelkowa.jpg",
+    "description": "Pojemne i zmysłowe formy o nowoczesnej geometrii, idealne na co dzień.",
+    "featured": true
+  },
+  {
+    "id": "z-klapka",
+    "name": "Torebki z klapką",
+    "slug": "torebki-z-klapka",
+    "count": 18,
+    "image": "/images/cat-klapka.jpg",
+    "description": "Klasyczna struktura ze szlachetnymi okuciami podkreślającymi elegancję.",
+    "featured": true
+  },
+  {
+    "id": "na-ramie",
+    "name": "Torebki na ramię",
+    "slug": "torebki-na-ramie",
+    "count": 24,
+    "image": "/images/cat-ramie.jpg",
+    "description": "Płynne linie i nieskazitelna ergonomia noszenia od rana do wieczora.",
+    "featured": true
+  },
+  {
+    "id": "listonoszki",
+    "name": "Listonoszki",
+    "slug": "listonoszki",
+    "count": 16,
+    "image": "/images/cat-listonoszka.jpg",
+    "description": "Kompaktowy format crossbody, łączący swobodę z luksusowym wykończeniem.",
+    "featured": true
+  },
+  {
+    "id": "shoppery-tote",
+    "name": "Shoppery i tote",
+    "slug": "shoppery-i-tote",
+    "count": 17,
+    "image": "/images/cat-shopper.jpg",
+    "description": "Maksymalna przestrzeń i architektoniczna forma dla wymagających kobiet.",
+    "featured": true
+  }
+]

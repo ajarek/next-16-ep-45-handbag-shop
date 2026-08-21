@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LUXÉ BAGS – Sklep Internetowy z Torebkami Luksusowymi
 
-## Getting Started
+Projekt ekskluzywnego sklepu internetowego z torebkami damskimi w estetyce minimalistycznego luksusu (*quiet luxury*). Zbudowany w oparciu o Next.js 16 App Router, React 19, Tailwind CSS v4, TypeScript oraz interaktywny WebGL shader.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Główne Funkcjonalności
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Estetyka Minimalistycznego Luksusu**: Paleta barw oparta na bieli, kremach i ciepłych beżach, z elegancką typografią szeryfową (`Playfair Display`) i nowoczesnym krojem bezszeryfowym (`Plus Jakarta Sans`).
+- **Interaktywny Shader WebGL w Hero**: Płynne gradienty, subtelna siatka (*grid*) oraz efekt świetlny (*spotlight*) podążający za kursorem myszy z płynną amortyzacją ruchu.
+- **Pasek Ogłoszeń & Nawigacja (Navbar)**:
+  - Informacja o darmowej dostawie od 299 zł i 30 dniach na zwrot.
+  - Szybka wyszukiwarka na żywo (Live Search modal).
+  - Przełącznik trybu jasnego i ciemnego z płynną animacją.
+  - Liczniki koszyka i ulubionych.
+- **Mobilne Menu Drawer**: Płynnie wysuwane menu z lewej strony ekranu (zgodnie z wytycznymi projektu).
+- **Kolekcje & Kategorie**: 5 interaktywnych kart kategorii ze zdjęciami, liczbą modeli i animacją hover.
+- **Wyróżniki Zaufania (Trust Badges)**: Darmowa dostawa, 30 dni na zwrot, Bezpieczne płatności, Gwarancja jakości.
+- **Bestsellery & Nowa Kolekcja**: Filtrowanie według kategorii i tagów, próbki kolorystyczne, szybki podgląd (Quick View Modal) oraz dodawanie do koszyka i listy życzeń.
+- **Wysuwany Koszyk (Cart Drawer)**: Podgląd produktów, kalkulator kwoty brakującej do darmowej dostawy, modyfikacja ilości i podsumowanie zamówienia.
+- **Przewodnik Stylu**: Minimalistyczne, Eleganckie, Codzienne, Na wieczór, Do pracy.
+- **Kunszt i Rzemiosło**: Opowieść o tradycji toskańskich garbarni, ręcznym szyciu i pozłacanych okuciach.
+- **Opinie Klientek**: Autentyczne recenzje ze zweryfikowanymi zakupami.
+- **Klub VIP / Newsletter**: Zapis do newslettera z walidacją Zod i natychmiastowym kodem rabatowym `LUXE10` (-10%).
+- **Pływający Concierge / Czat**: Interaktywny widget kontaktu w prawym dolnym rogu ekranu.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Stos Technologiczny
 
-## Learn More
+- **Framework**: [Next.js 16.3.2 App Router](https://nextjs.org/)
+- **UI / Core**: React 19, TypeScript (strict mode)
+- **Styling**: Tailwind CSS v4, Glassmorphism, CSS Custom Properties
+- **Animacje**: Framer Motion & WebGL Fragment Shaders
+- **Ikony**: Lucide React
+- **Walidacja**: Zod
+- **Struktura Danych**: `public/data/` (JSON) oraz `public/images/`
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Uruchomienie Projektu
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Zainstaluj zależności:
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+2. Uruchom serwer deweloperski:
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Otwórz [http://localhost:3000](http://localhost:3000) w przeglądarce.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Kontrola jakości i budowanie:
+   ```bash
+   npx tsc --noEmit   # Sprawdzanie typów
+   npm run lint       # Linter ESLint
+   npm run build      # Produkcyjna kompilacja
+   ```

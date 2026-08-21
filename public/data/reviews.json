@@ -1,0 +1,32 @@
+[
+  {
+    "id": "rev-1",
+    "author": "Katarzyna W.",
+    "city": "Warszawa",
+    "product": "Torebka Aurelia Top-Handle",
+    "rating": 5,
+    "date": "2 dni temu",
+    "comment": "Jakość skóry przewyższyła moje najśmielsze oczekiwania. Zapach prawdziwej włoskiej skóry i precyzja szycia są zachwycające. Torebka zbiera komplementy każdego dnia!",
+    "verified": true
+  },
+  {
+    "id": "rev-2",
+    "author": "Magdalena K.",
+    "city": "Kraków",
+    "product": "Shopper Aurore Grande",
+    "rating": 5,
+    "date": "Tydzień temu",
+    "comment": "Szukałam eleganckiej torby do pracy, która bez problemu pomieści laptopa i dokumenty. Aurore to kwintesencja cichego luksusu – minimalistyczna, ale niesamowicie efektowna.",
+    "verified": true
+  },
+  {
+    "id": "rev-3",
+    "author": "Aleksandra P.",
+    "city": "Gdańsk",
+    "product": "Torebka Céleste Hobo",
+    "rating": 5,
+    "date": "2 tygodnie temu",
+    "comment": "Kolor szałwiowy na żywo wygląda jeszcze piękniej niż na zdjęciach. Bardzo wygodny fason i błyskawiczna przesyłka zapakowana jak w ekskluzywnym paryskim butiku.",
+    "verified": true
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "minimalistyczne",
+    "title": "Minimalistyczne",
+    "subtitle": "Czyste linie i prostota formy",
+    "image": "/images/cat-kubelkowa.jpg",
+    "tag": "Quiet Luxury"
+  },
+  {
+    "id": "eleganckie",
+    "title": "Eleganckie",
+    "subtitle": "Ponadczasowy szyk na wyjątkowe chwile",
+    "image": "/images/hero-handbag.jpg",
+    "tag": "Signature"
+  },
+  {
+    "id": "codzienne",
+    "title": "Codzienne",
+    "subtitle": "Komfort i funkcjonalność każdego dnia",
+    "image": "/images/cat-ramie.jpg",
+    "tag": "Daily Chic"
+  },
+  {
+    "id": "na-wieczor",
+    "title": "Na wieczór",
+    "subtitle": "Zmysłowe akcenty i blask złota",
+    "image": "/images/cat-klapka.jpg",
+    "tag": "Gala & Event"
+  },
+  {
+    "id": "do-pracy",
+    "title": "Do pracy",
+    "subtitle": "Pojemność i architektoniczna elegancja",
+    "image": "/images/cat-shopper.jpg",
+    "tag": "Business Executive"
+  }
+]

@@ -1,0 +1,163 @@
+[
+  {
+    "id": "luxe-01",
+    "name": "Torebka Aurelia Top-Handle",
+    "slug": "aurelia-top-handle",
+    "category": "z-klapka",
+    "categoryName": "Torebki z klapką",
+    "price": 1490,
+    "originalPrice": 1690,
+    "rating": 4.95,
+    "reviewsCount": 38,
+    "images": [
+      "/images/hero-handbag.jpg",
+      "/images/cat-klapka.jpg"
+    ],
+    "colors": [
+      { "name": "Kość słoniowa", "hex": "#f5f0eb" },
+      { "name": "Ciepły beż", "hex": "#d8c4b6" },
+      { "name": "Głęboka czerń", "hex": "#1a1a1a" }
+    ],
+    "tags": ["Bestseller", "Nowa kolekcja"],
+    "style": "Eleganckie",
+    "description": "Ikoniczna torebka z klapką wykonana z tłoczonej włoskiej skóry cielęcej o ziarnistej strukturze. Pozłacane zapięcie obrotowe z grawerem LUXÉ i odpinany regulowany pasek.",
+    "material": "100% Włoska skóra cielęca licowa",
+    "dimensions": "28 x 20 x 12 cm",
+    "inStock": true,
+    "featured": true
+  },
+  {
+    "id": "luxe-02",
+    "name": "Torebka Lorenti Bucket",
+    "slug": "lorenti-bucket",
+    "category": "kubelkowe",
+    "categoryName": "Torebki kubełkowe",
+    "price": 1250,
+    "originalPrice": null,
+    "rating": 4.9,
+    "reviewsCount": 24,
+    "images": [
+      "/images/cat-kubelkowa.jpg",
+      "/images/hero-handbag.jpg"
+    ],
+    "colors": [
+      { "name": "Kremowy écru", "hex": "#faf7f2" },
+      { "name": "Karmelowy", "hex": "#b08968" },
+      { "name": "Taupe", "hex": "#8c7e74" }
+    ],
+    "tags": ["Bestseller"],
+    "style": "Minimalistyczne",
+    "description": "Stylowy worek z miękkiej skóry nappa ze ściągaczem z mosiężnymi detalami. Przestronne wnętrze wyściełane naturalnym zamszem.",
+    "material": "Skóra nappa premium, wykończenie zamszowe",
+    "dimensions": "24 x 26 x 15 cm",
+    "inStock": true,
+    "featured": true
+  },
+  {
+    "id": "luxe-03",
+    "name": "Torebka Céleste Hobo",
+    "slug": "celeste-hobo",
+    "category": "na-ramie",
+    "categoryName": "Torebki na ramię",
+    "price": 1380,
+    "originalPrice": null,
+    "rating": 4.88,
+    "reviewsCount": 19,
+    "images": [
+      "/images/cat-ramie.jpg",
+      "/images/hero-handbag.jpg"
+    ],
+    "colors": [
+      { "name": "Morski szałwiowy", "hex": "#8da399" },
+      { "name": "Kremowa biel", "hex": "#f7f5f0" },
+      { "name": "Pudrowy róż", "hex": "#e8d5ce" }
+    ],
+    "tags": ["Nowość"],
+    "style": "Codzienne",
+    "description": "Ergonomiczna torebka półksiężycowa o płynnej, rzeźbiarskiej linii. Zapewnia wyjątkowy komfort noszenia na ramieniu przez cały dzień.",
+    "material": "Gładka skóra bydlęca z satynowym połyskiem",
+    "dimensions": "32 x 22 x 8 cm",
+    "inStock": true,
+    "featured": true
+  },
+  {
+    "id": "luxe-04",
+    "name": "Listonoszka Élysée Flap",
+    "slug": "elysee-flap",
+    "category": "listonoszki",
+    "categoryName": "Listonoszki",
+    "price": 1190,
+    "originalPrice": 1350,
+    "rating": 4.92,
+    "reviewsCount": 42,
+    "images": [
+      "/images/cat-listonoszka.jpg",
+      "/images/hero-handbag.jpg"
+    ],
+    "colors": [
+      { "name": "Mink Taupe", "hex": "#9a8c82" },
+      { "name": "Czekoladowy brąz", "hex": "#4a3b32" },
+      { "name": "Waniliowy", "hex": "#f5eedc" }
+    ],
+    "tags": ["Bestseller", "Okazja"],
+    "style": "Do pracy",
+    "description": "Geometryczna torebka crossbody ze złotą klamrą w stylu minimalistycznego luksusu. Posiada wewnętrzne przegrody na telefon i karty.",
+    "material": "Włoska skóra palmellato odporna na zarysowania",
+    "dimensions": "23 x 17 x 7 cm",
+    "inStock": true,
+    "featured": true
+  },
+  {
+    "id": "luxe-05",
+    "name": "Shopper Aurore Grande",
+    "slug": "aurore-grande",
+    "category": "shoppery-tote",
+    "categoryName": "Shoppery i tote",
+    "price": 1790,
+    "originalPrice": null,
+    "rating": 4.97,
+    "reviewsCount": 31,
+    "images": [
+      "/images/cat-shopper.jpg",
+      "/images/hero-handbag.jpg"
+    ],
+    "colors": [
+      { "name": "Pastelowy maślany", "hex": "#faedcd" },
+      { "name": "Koniakowy", "hex": "#9c6644" },
+      { "name": "Onyksowa czerń", "hex": "#1b1b1b" }
+    ],
+    "tags": ["Edycja limitowana"],
+    "style": "Do pracy",
+    "description": "Luksusowy trapezowy shopper mieszczący laptop 14\", dokumenty A4 i codzienne drobiazgi. Wzmocnione rączki i boczne pasy regulujące szerokość.",
+    "material": "Gruba licowa skóra toskańska, wykończenie ręczne",
+    "dimensions": "38 x 28 x 16 cm",
+    "inStock": true,
+    "featured": true
+  },
+  {
+    "id": "luxe-06",
+    "name": "Kopertówka Soirée Minimalist",
+    "slug": "soiree-minimalist",
+    "category": "z-klapka",
+    "categoryName": "Torebki z klapką",
+    "price": 990,
+    "originalPrice": null,
+    "rating": 4.91,
+    "reviewsCount": 15,
+    "images": [
+      "/images/cat-klapka.jpg",
+      "/images/hero-handbag.jpg"
+    ],
+    "colors": [
+      { "name": "Czysta biel", "hex": "#ffffff" },
+      { "name": "Złocisty beż", "hex": "#e0c9a6" }
+    ],
+    "tags": ["Nowość"],
+    "style": "Na wieczór",
+    "description": "Subtelna torebka wieczorowa z odpinanym łańcuszkiem jubilerskim. Niezastąpiona na wernisaże, gale i uroczyste kolacje.",
+    "material": "Gładka satynowa skóra cielęca",
+    "dimensions": "21 x 13 x 5 cm",
+    "inStock": true,
+    "featured": false
+  }
+]
