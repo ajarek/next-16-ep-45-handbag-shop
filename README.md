@@ -14,9 +14,10 @@ Projekt ekskluzywnego sklepu internetowego z torebkami damskimi w estetyce minim
   - Przełącznik trybu jasnego i ciemnego z płynną animacją.
   - Liczniki koszyka i ulubionych.
 - **Mobilne Menu Drawer**: Płynnie wysuwane menu z lewej strony ekranu (zgodnie z wytycznymi projektu).
-- **Kolekcje & Kategorie**: 5 interaktywnych kart kategorii ze zdjęciami, liczbą modeli i animacją hover.
+- **Kolekcje & Kategorie**: 5 interaktywnych kart kategorii ze zdjęciami, liczbą modeli i animacją hover — kliknięcie prowadzi do sklepu z aktywnym filtrem kategorii.
 - **Wyróżniki Zaufania (Trust Badges)**: Darmowa dostawa, 30 dni na zwrot, Bezpieczne płatności, Gwarancja jakości.
-- **Bestsellery & Nowa Kolekcja**: Filtrowanie według kategorii i tagów, próbki kolorystyczne, szybki podgląd (Quick View Modal) oraz dodawanie do koszyka i listy życzeń.
+- **Strona Sklepu (`/shop`)**: Pełny katalog produktów z filtrowaniem według kategorii (spójnym z podlinkami w menu Shop) i tagów oraz sortowaniem po cenie i ocenach. Aktywna kategoria zapisywana w adresie URL (`/shop?kategoria=...`), walidowana przy pomocy Zod.
+- **Bestsellery & Nowa Kolekcja**: Trzy wyróżnione modele na stronie głównej z próbkami kolorystycznymi, szybkim podglądem (Quick View Modal), dodawaniem do koszyka i listy życzeń. Przycisk „Zobacz cały sklep" prowadzi do `/shop`.
 - **Wysuwany Koszyk (Cart Drawer)**: Podgląd produktów, kalkulator kwoty brakującej do darmowej dostawy, modyfikacja ilości i podsumowanie zamówienia.
 - **Przewodnik Stylu**: Minimalistyczne, Eleganckie, Codzienne, Na wieczór, Do pracy.
 - **Kunszt i Rzemiosło**: Opowieść o tradycji toskańskich garbarni, ręcznym szyciu i pozłacanych okuciach.

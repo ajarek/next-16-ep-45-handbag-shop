@@ -62,13 +62,13 @@ export function Navbar() {
             {/* Środek - Linki nawigacyjne (Desktop) */}
             <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-foreground">
               <Link
-                href="#hero"
+                href="/#hero"
                 className="hover:text-accent transition-colors py-2 relative"
               >
                 Strona główna
               </Link>
               <Link
-                href="#kolekcje"
+                href="/#kolekcje"
                 className="hover:text-accent transition-colors py-2"
               >
                 Kolekcje
@@ -80,8 +80,10 @@ export function Navbar() {
                 onMouseEnter={() => setIsShopDropdownOpen(true)}
                 onMouseLeave={() => setIsShopDropdownOpen(false)}
               >
-                <button
+                <Link
+                  href="/shop"
                   className="flex items-center gap-1 hover:text-accent transition-colors focus:outline-none"
+                  aria-haspopup="true"
                   aria-expanded={isShopDropdownOpen}
                 >
                   <span>Shop</span>
@@ -90,52 +92,58 @@ export function Navbar() {
                       isShopDropdownOpen ? "rotate-180 text-accent" : ""
                     }`}
                   />
-                </button>
+                </Link>
 
                 {isShopDropdownOpen && (
                   <div className="absolute top-full left-0 w-64 p-3 bg-card shadow-xl rounded-2xl border border-border grid gap-1.5 animate-in fade-in slide-in-from-top-2 duration-200 z-50 text-card-foreground">
-                    <a
-                      href="#kolekcje"
+                    <Link
+                      href="/shop"
+                      className="px-3 py-2 mb-1 pb-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-accent hover:bg-secondary transition-colors border-b border-border"
+                    >
+                      Wszystkie produkty
+                    </Link>
+                    <Link
+                      href="/shop?kategoria=kubelkowe"
                       className="px-3 py-2 rounded-lg text-xs font-medium hover:bg-secondary transition-colors"
                     >
                       Torebki kubełkowe (12)
-                    </a>
-                    <a
-                      href="#kolekcje"
+                    </Link>
+                    <Link
+                      href="/shop?kategoria=z-klapka"
                       className="px-3 py-2 rounded-lg text-xs font-medium hover:bg-secondary transition-colors"
                     >
                       Torebki z klapką (18)
-                    </a>
-                    <a
-                      href="#kolekcje"
+                    </Link>
+                    <Link
+                      href="/shop?kategoria=na-ramie"
                       className="px-3 py-2 rounded-lg text-xs font-medium hover:bg-secondary transition-colors"
                     >
                       Torebki na ramię (24)
-                    </a>
-                    <a
-                      href="#kolekcje"
+                    </Link>
+                    <Link
+                      href="/shop?kategoria=listonoszki"
                       className="px-3 py-2 rounded-lg text-xs font-medium hover:bg-secondary transition-colors"
                     >
                       Listonoszki (16)
-                    </a>
-                    <a
-                      href="#kolekcje"
+                    </Link>
+                    <Link
+                      href="/shop?kategoria=shoppery-tote"
                       className="px-3 py-2 rounded-lg text-xs font-medium hover:bg-secondary transition-colors"
                     >
                       Shoppery i tote (17)
-                    </a>
+                    </Link>
                   </div>
                 )}
               </div>
 
               <Link
-                href="#bestsellery"
+                href="/#bestsellery"
                 className="hover:text-accent transition-colors py-2"
               >
                 Nowości
               </Link>
               <Link
-                href="#rzemioslo"
+                href="/#rzemioslo"
                 className="hover:text-accent transition-colors py-2"
               >
                 O nas

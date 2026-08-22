@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Navbar } from "@/components/navbar/Navbar";
 import { HeroSection } from "@/components/hero/HeroSection";
 import { CategoriesSection } from "@/components/categories/CategoriesSection";
@@ -13,16 +13,6 @@ import { NewsletterSection } from "@/components/sections/NewsletterSection";
 import { Footer } from "@/components/footer/Footer";
 
 export default function HomePage() {
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState<string | null>(null);
-
-  const handleSelectCategory = (categoryId: string) => {
-    setActiveCategoryFilter(categoryId);
-  };
-
-  const handleClearCategory = () => {
-    setActiveCategoryFilter(null);
-  };
-
   return (
     <div className="flex flex-col min-h-screen">
       {/* Pasek nawigacji */}
@@ -34,16 +24,13 @@ export default function HomePage() {
         <HeroSection />
 
         {/* Sekcja 5 głównych kategorii torebek */}
-        <CategoriesSection onSelectCategory={handleSelectCategory} />
+        <CategoriesSection />
 
         {/* Wyróżniki zaufania i korzyści */}
         <TrustBadges />
 
-        {/* Sekcja bestsellerów i nowej kolekcji z filtrowaniem */}
-        <BestsellersSection
-          activeCategoryFilter={activeCategoryFilter}
-          onClearCategoryFilter={handleClearCategory}
-        />
+        {/* Trzy wyróżnione bestsellery — cała kolekcja w /shop */}
+        <BestsellersSection />
 
         {/* Przewodnik stylów */}
         <StyleGuideSection />

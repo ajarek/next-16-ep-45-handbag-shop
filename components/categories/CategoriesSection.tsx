@@ -2,12 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { Category } from "@/lib/types";
 import { motion } from "framer-motion";
 
-export function CategoriesSection({ onSelectCategory }: { onSelectCategory?: (slug: string) => void }) {
+export function CategoriesSection() {
   const [categories, setCategories] = useState<Category[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     fetch("/data/categories.json")
@@ -30,13 +33,13 @@ export function CategoriesSection({ onSelectCategory }: { onSelectCategory?: (sl
             </h2>
           </div>
 
-          <a
-            href="#bestsellery"
+          <Link
+            href="/shop"
             className="inline-flex items-center justify-center sm:justify-start gap-1.5 text-xs tracking-wider uppercase font-semibold text-foreground hover:text-accent transition-colors group"
           >
             <span>Zobacz wszystkie</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
+          </Link>
         </div>
 
         {/* Siatka 5 kart kategorii */}
@@ -48,13 +51,7 @@ export function CategoriesSection({ onSelectCategory }: { onSelectCategory?: (sl
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              onClick={() => {
-                if (onSelectCategory) {
-                  onSelectCategory(category.id);
-                }
-                const el = document.getElementById("bestsellery");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={() => router.push(`/shop?kategoria=${category.id}`)}
               className="group cursor-pointer flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-card text-card-foreground border border-border shadow-sm hover:shadow-xl hover:border-accent/40 transition-all duration-300 relative overflow-hidden"
             >
               {/* Zdjęcie torebki */}

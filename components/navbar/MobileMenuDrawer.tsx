@@ -16,14 +16,24 @@ export function MobileMenuDrawer({ isOpen, onClose }: MobileMenuDrawerProps) {
   const { wishlistCount, cartCount, setIsCartOpen, setIsSearchOpen } = useShop();
 
   const navLinks = [
-    { name: "Strona główna", href: "#hero" },
-    { name: "Kolekcje", href: "#kolekcje" },
-    { name: "Bestsellery", href: "#bestsellery" },
-    { name: "Nowości", href: "#bestsellery" },
-    { name: "Wybierz według stylu", href: "#style" },
-    { name: "Kunszt i Rzemiosło", href: "#rzemioslo" },
-    { name: "Opinie klientek", href: "#opinie" },
+    { name: "Strona główna", href: "/#hero" },
+    { name: "Kolekcje", href: "/#kolekcje" },
+    { name: "Bestsellery", href: "/#bestsellery" },
+    { name: "Nowości", href: "/#bestsellery" },
+    { name: "Wybierz według stylu", href: "/#style" },
+    { name: "Kunszt i Rzemiosło", href: "/#rzemioslo" },
+    { name: "Opinie klientek", href: "/#opinie" },
     { name: "Kontakt", href: "#kontakt" },
+  ];
+
+  // Podlinki sklepu — zgodne z rozwijanym menu Shop w nawigacji
+  const shopLinks = [
+    { name: "Wszystkie produkty", href: "/shop" },
+    { name: "Torebki kubełkowe", href: "/shop?kategoria=kubelkowe" },
+    { name: "Torebki z klapką", href: "/shop?kategoria=z-klapka" },
+    { name: "Torebki na ramię", href: "/shop?kategoria=na-ramie" },
+    { name: "Listonoszki", href: "/shop?kategoria=listonoszki" },
+    { name: "Shoppery i tote", href: "/shop?kategoria=shoppery-tote" },
   ];
 
   return (
@@ -102,6 +112,26 @@ export function MobileMenuDrawer({ isOpen, onClose }: MobileMenuDrawerProps) {
                     </a>
                   ))}
                 </nav>
+
+                {/* Podlinki sklepu */}
+                <div className="px-4 pb-4">
+                  <p className="px-4 pb-2 text-[10px] font-semibold tracking-[0.25em] text-muted-foreground uppercase border-t border-border pt-4">
+                    Sklep
+                  </p>
+                  <div className="space-y-1">
+                    {shopLinks.map((link) => (
+                      <Link
+                        key={link.name}
+                        href={link.href}
+                        onClick={onClose}
+                        className="flex items-center justify-between px-4 py-2.5 rounded-xl text-foreground text-sm hover:bg-secondary hover:text-accent transition-colors"
+                      >
+                        <span>{link.name}</span>
+                        <ChevronRight className="w-4 h-4 text-muted-foreground opacity-60" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               {/* Dół menu - akcje użytkownika */}
