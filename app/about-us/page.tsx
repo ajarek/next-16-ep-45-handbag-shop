@@ -150,6 +150,7 @@ export default function AboutUsPage() {
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
+                    loading="eager"
                   />
                 </div>
 
@@ -158,12 +159,12 @@ export default function AboutUsPage() {
                   <div className="flex items-center gap-2 text-accent">
                     <Globe className="w-4 h-4" />
                     <span className="text-xs font-semibold uppercase tracking-wider">
-                      Warszawa & Toskania
+                      Kołobrzeg & Toskania
                     </span>
                   </div>
                   <p className="text-xs text-foreground font-medium">
-                    Projektujemy w Warszawie, szyjemy z najlepszych włoskich skór
-                    w naszej pracowni na Mokotowie.
+                    Projektujemy w Kołobrzegu, szyjemy z najlepszych włoskich skór
+                    w naszej pracowni w Kołobrzegu.
                   </p>
                 </div>
               </motion.div>
@@ -444,7 +445,7 @@ export default function AboutUsPage() {
                 className="grid grid-cols-2 gap-4"
               >
                 {[
-                  { title: "Pracownia", desc: "Mokotów, Warszawa" },
+                  { title: "Pracownia", desc: "Kołobrzeg, Polska" },
                   { title: "Garbarnia", desc: "Florencja, Toskania" },
                   { title: "Projektowanie", desc: "Studio LUXÉ" },
                   { title: "Kontrola jakości", desc: "Każdy szczegół" },

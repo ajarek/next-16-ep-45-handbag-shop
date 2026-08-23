@@ -187,7 +187,8 @@ export function CartDrawer() {
 
                   <button
                     onClick={() => {
-                      alert("Przejście do kasy i płatności.");
+                      setIsCartOpen(false);
+                      router.push("/checkout");
                     }}
                     className="w-full py-3.5 px-6 rounded-xl bg-primary text-primary-foreground font-semibold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-opacity hover:opacity-90 shadow-md"
                   >

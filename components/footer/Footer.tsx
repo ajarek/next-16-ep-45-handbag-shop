@@ -104,11 +104,11 @@ export function Footer() {
             <div className="space-y-2 text-xs text-muted-foreground">
               <p className="flex items-start gap-2">
                 <MapPin className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
-                <span>ul. Mokotowska 45, 00-542 Warszawa</span>
+                <span>ul. Wielkopolska 2, 78-100   Kołobrzeg</span>
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-accent shrink-0" />
-                <span>+48 22 123 45 67</span>
+                <span>+48 573 219 230</span>
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-accent shrink-0" />

@@ -48,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl" suppressHydrationWarning className={`${playfair.variable} ${plusJakarta.variable}`}>
+    <html lang="pl" suppressHydrationWarning data-scroll-behavior="smooth" className={`${playfair.variable} ${plusJakarta.variable}`}>
       <body className="min-h-screen flex flex-col font-sans bg-background text-foreground selection:bg-accent selection:text-accent-foreground transition-colors duration-300 antialiased">
         <ShopProvider>
           {children}

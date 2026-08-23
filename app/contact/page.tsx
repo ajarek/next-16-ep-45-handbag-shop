@@ -28,9 +28,9 @@ const daneKontaktowe = [
   {
     ikona: Phone,
     tytul: "Telefon",
-    wartosc: "+48 22 123 45 67",
+    wartosc: "+48 573219230",
     opis: "Pn–Pt: 10:00–19:00",
-    href: "tel:+48221234567",
+    href: "tel:+48573219230",
   },
   {
     ikona: Mail,
@@ -42,9 +42,9 @@ const daneKontaktowe = [
   {
     ikona: MapPin,
     tytul: "Showroom",
-    wartosc: "ul. Mokotowska 45",
-    opis: "00-542 Warszawa",
-    href: "https://maps.google.com/?q=Mokotowska+45+Warszawa",
+    wartosc: "ul. Wielkopolska 2",
+    opis: "78-100 Kołobrzeg",
+    href: "https://maps.google.com/?q=ul.+Wielkopolska+2+Kołobrzeg",
   },
   {
     ikona: Clock,
@@ -86,7 +86,7 @@ const faq = [
   {
     pytanie: "Czy mogę odwiedzić showroom?",
     odpowiedz:
-      "Tak! Nasz showroom przy ul. Mokotowskiej 45 w Warszawie jest otwarty od poniedziałku do piątku w godzinach 10:00–19:00 oraz w soboty 11:00–16:00.",
+      "Tak! Nasz showroom przy ul. Wielkopolskiej 2 w Kołobrzegu jest otwarty od poniedziałku do piątku w godzinach 10:00–19:00 oraz w soboty 11:00–16:00.",
   },
 ];
 
@@ -383,7 +383,7 @@ export default function ContactPage() {
                 className="lg:col-span-5 space-y-6"
               >
                 {/* Miniatura mapy */}
-                <div className="rounded-3xl overflow-hidden border border-border shadow-lg bg-secondary aspect-[4/3] relative">
+                <div className="rounded-3xl overflow-hidden border border-border shadow-lg bg-secondary aspect-4/3 relative">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2443.6!2d21.02!3d52.22!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTLCsDEzJzEyLjAiTiAyMcKwMDEnMTIuMCJF!5e0!3m2!1spl!2spl!4v1"
                     width="100%"
@@ -406,10 +406,10 @@ export default function ContactPage() {
                           LUXÉ BAGS Showroom
                         </h4>
                         <p className="text-[11px] text-muted-foreground mt-0.5">
-                          ul. Mokotowska 45, 00-542 Warszawa
+                          ul. Wielkopolska 2, 78-100 Kołobrzeg
                         </p>
                         <p className="text-[11px] text-muted-foreground">
-                          Metro Centrum · 5 min piechotą
+                          78-100 Kołobrzeg · 5 min piechotą
                         </p>
                       </div>
                     </div>

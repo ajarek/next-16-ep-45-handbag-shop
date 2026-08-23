@@ -62,6 +62,7 @@ export function CategoriesSection() {
                   fill
                   className="object-contain p-2 group-hover:scale-108 transition-transform duration-500 ease-out"
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                  loading="eager"
                 />
               </div>
 
