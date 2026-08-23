@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useMemo, useRef } from "react";
+import React, { createContext, useContext, useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { Product, ColorOption, CartItem } from "@/lib/types";
+import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 
 interface ToastNotification {
   id: string;
@@ -44,37 +45,9 @@ interface ShopContextType {
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
 
 export function ShopProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const saved = localStorage.getItem("luxebag_cart");
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const [wishlist, setWishlist] = useState<string[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const saved = localStorage.getItem("luxebag_wishlist");
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window === "undefined") return "light";
-    try {
-      const saved = localStorage.getItem("luxebag_theme") as "light" | "dark" | null;
-      if (saved) return saved;
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
-    } catch {
-      // Ignoruj błąd odczytu
-    }
-    return "light";
-  });
+  const [cart, setCart] = useLocalStorage<CartItem[]>("luxebag_cart", []);
+  const [wishlist, setWishlist] = useLocalStorage<string[]>("luxebag_wishlist", []);
+  const [theme, setTheme] = useLocalStorage<"light" | "dark">("luxebag_theme", "light");
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
@@ -86,49 +59,26 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   // Synchronizacja motywu z klasą na tagu html
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
-    try {
-      localStorage.setItem("luxebag_theme", theme);
-    } catch {
-      // Ignoruj błąd
-    }
   }, [theme]);
-
-  // Zapisywanie koszyka do LocalStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem("luxebag_cart", JSON.stringify(cart));
-    } catch {
-      // Obsługa błędów storage
-    }
-  }, [cart]);
-
-  // Zapisywanie ulubionych do LocalStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem("luxebag_wishlist", JSON.stringify(wishlist));
-    } catch {
-      // Obsługa błędów storage
-    }
-  }, [wishlist]);
 
   const removeToast = (id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const showToast = (message: string, type: "success" | "info" = "success") => {
+  const showToast = useCallback((message: string, type: "success" | "info" = "success") => {
     toastCounterRef.current += 1;
     const id = `toast-${Date.now()}-${toastCounterRef.current}`;
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
-      removeToast(id);
+      setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 3500);
-  };
+  }, []);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
+  }, [setTheme]);
 
-  const addToCart = (product: Product, selectedColor?: ColorOption, quantity = 1) => {
+  const addToCart = useCallback((product: Product, selectedColor?: ColorOption, quantity = 1) => {
     const color = selectedColor || product.colors[0];
     setCart((prev) => {
       const existingIndex = prev.findIndex(
@@ -146,18 +96,18 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
 
     showToast(`Dodano "${product.name}" (${color.name}) do koszyka.`);
     setIsCartOpen(true);
-  };
+  }, [setCart, showToast, setIsCartOpen]);
 
-  const removeFromCart = (productId: string, colorName: string) => {
+  const removeFromCart = useCallback((productId: string, colorName: string) => {
     setCart((prev) =>
       prev.filter(
         (item) => !(item.product.id === productId && item.selectedColor.name === colorName)
       )
     );
     showToast("Usunięto produkt z koszyka.", "info");
-  };
+  }, [setCart, showToast]);
 
-  const updateQuantity = (productId: string, colorName: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, colorName: string, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(productId, colorName);
       return;
@@ -170,14 +120,14 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
         return item;
       })
     );
-  };
+  }, [removeFromCart, setCart]);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCart([]);
     showToast("Koszyk został wyczyszczony.", "info");
-  };
+  }, [setCart, showToast]);
 
-  const toggleWishlist = (productId: string) => {
+  const toggleWishlist = useCallback((productId: string) => {
     setWishlist((prev) => {
       const exists = prev.includes(productId);
       if (exists) {
@@ -188,9 +138,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
         return [...prev, productId];
       }
     });
-  };
+  }, [setWishlist, showToast]);
 
-  const isInWishlist = (productId: string) => wishlist.includes(productId);
+  const isInWishlist = useCallback((productId: string) => wishlist.includes(productId), [wishlist]);
 
   const cartCount = useMemo(
     () => cart.reduce((acc, item) => acc + item.quantity, 0),

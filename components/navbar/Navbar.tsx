@@ -143,13 +143,13 @@ export function Navbar() {
                 Nowości
               </Link>
               <Link
-                href="/#rzemioslo"
+                href="/about-us"
                 className="hover:text-accent transition-colors py-2"
               >
                 O nas
               </Link>
               <Link
-                href="#kontakt"
+                href="/contact"
                 className="hover:text-accent transition-colors py-2"
               >
                 Kontakt

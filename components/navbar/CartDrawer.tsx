@@ -6,8 +6,10 @@ import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Truck } from "lucide-r
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import {useRouter} from "next/navigation";
 
 export function CartDrawer() {
+  const router = useRouter();
   const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, cartTotal, clearCart } = useShop();
 
   const FREE_SHIPPING_THRESHOLD = 299;
@@ -86,7 +88,7 @@ export function CartDrawer() {
                       Odkryj naszą nową kolekcję luksusowych torebek i znajdź swój wymarzony model.
                     </p>
                     <button
-                      onClick={() => setIsCartOpen(false)}
+                      onClick={() => { setIsCartOpen(false); router.push("/shop"); }}
                       className="px-6 py-2.5 rounded-full bg-primary text-primary-foreground text-xs uppercase tracking-widest font-semibold hover:opacity-90 transition-opacity"
                     >
                       Przejdź do zakupów

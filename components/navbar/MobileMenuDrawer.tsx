@@ -23,7 +23,8 @@ export function MobileMenuDrawer({ isOpen, onClose }: MobileMenuDrawerProps) {
     { name: "Wybierz według stylu", href: "/#style" },
     { name: "Kunszt i Rzemiosło", href: "/#rzemioslo" },
     { name: "Opinie klientek", href: "/#opinie" },
-    { name: "Kontakt", href: "#kontakt" },
+    { name: "O nas", href: "/about-us" },
+    { name: "Kontakt", href: "/contact" },
   ];
 
   // Podlinki sklepu — zgodne z rozwijanym menu Shop w nawigacji
