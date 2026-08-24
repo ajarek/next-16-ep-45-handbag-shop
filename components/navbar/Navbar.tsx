@@ -2,8 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Heart, ShoppingBag, User, Menu, ChevronDown } from "lucide-react";
+import {
+  Search,
+  Heart,
+  ShoppingBag,
+  User,
+  Menu,
+  ChevronDown,
+  LogOut,
+  Package,
+  UserCircle,
+  Database,
+} from "lucide-react";
 import { useShop } from "@/context/ShopContext";
+import { useAuth } from "@/context/AuthContext";
 import { AnnouncementBar } from "./AnnouncementBar";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileMenuDrawer } from "./MobileMenuDrawer";
@@ -13,8 +25,10 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
+  const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
 
   const { wishlistCount, cartCount, setIsCartOpen, setIsSearchOpen } = useShop();
+  const { zalogowany, profil, uzytkownik, wylogowanie, isAdmin } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +37,16 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleWylogowanie = async () => {
+    await wylogowanie();
+    setIsAccountDropdownOpen(false);
+  };
+
+  const inicjaly =
+    profil?.displayName?.charAt(0)?.toUpperCase() ||
+    uzytkownik?.email?.charAt(0)?.toUpperCase() ||
+    "U";
 
   return (
     <header className="sticky top-0 z-40 w-full">
@@ -181,21 +205,88 @@ export function Navbar() {
                 <Search className="w-5 h-5" />
               </button>
 
-              {/* Konto użytkownika */}
-              <button
-                onClick={() => {
-                  alert("Logowanie Firebase Auth / Profil klienta.");
-                }}
-                className="p-2 rounded-full text-foreground hover:bg-secondary transition-colors"
-                aria-label="Konto użytkownika"
-                title="Moje konto"
+              {/* Konto użytkownika — dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => setIsAccountDropdownOpen(true)}
+                onMouseLeave={() => setIsAccountDropdownOpen(false)}
               >
-                <User className="w-5 h-5" />
-              </button>
+                {zalogowany ? (
+                  <>
+                    <button
+                      onClick={() =>
+                        setIsAccountDropdownOpen(!isAccountDropdownOpen)
+                      }
+                      className="p-2 rounded-full hover:bg-secondary transition-colors relative"
+                      aria-label="Moje konto"
+                      title="Moje konto"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-xs font-bold">
+                        {inicjaly}
+                      </div>
+                    </button>
+
+                    {isAccountDropdownOpen && (
+                      <div className="absolute top-full right-0 w-56 p-3 bg-card shadow-xl rounded-2xl border border-border animate-in fade-in slide-in-from-top-2 duration-200 z-50 text-card-foreground space-y-1">
+                        <div className="px-3 pb-2 mb-2 border-b border-border">
+                          <p className="text-xs font-semibold text-foreground truncate">
+                            {profil?.displayName || "Użytkownik"}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground truncate">
+                            {uzytkownik?.email}
+                          </p>
+                        </div>
+                        <Link
+                          href="/account"
+                          onClick={() => setIsAccountDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium hover:bg-secondary transition-colors"
+                        >
+                          <UserCircle className="w-4 h-4 text-accent" />
+                          Moje konto
+                        </Link>
+                        <Link
+                          href="/account?zakladka=zamowienia"
+                          onClick={() => setIsAccountDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium hover:bg-secondary transition-colors"
+                        >
+                          <Package className="w-4 h-4 text-accent" />
+                          Zamówienia
+                        </Link>
+                        {isAdmin && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setIsAccountDropdownOpen(false)}
+                            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium hover:bg-secondary transition-colors border-t border-border mt-1 pt-2"
+                          >
+                            <Database className="w-4 h-4 text-accent" />
+                            Panel admina
+                          </Link>
+                        )}
+                        <button
+                          onClick={handleWylogowanie}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Wyloguj się
+                        </button>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    href="/auth/login"
+                    className="p-2 rounded-full text-foreground hover:bg-secondary transition-colors"
+                    aria-label="Zaloguj się"
+                    title="Moje konto"
+                  >
+                    <User className="w-5 h-5" />
+                  </Link>
+                )}
+              </div>
 
               {/* Ulubione (Wishlist) */}
-              <a
-                href="#bestsellery"
+              <Link
+                href={zalogowany ? "/account?zakladka=wishlist" : "/shop"}
                 className="p-2 rounded-full text-foreground hover:bg-secondary transition-colors relative"
                 aria-label="Lista życzeń"
                 title="Ulubione"
@@ -206,7 +297,7 @@ export function Navbar() {
                     {wishlistCount}
                   </span>
                 )}
-              </a>
+              </Link>
 
               {/* Koszyk */}
               <button

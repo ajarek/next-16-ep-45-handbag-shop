@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ShopProvider } from "@/context/ShopContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { CartDrawer } from "@/components/navbar/CartDrawer";
 import { QuickViewModal } from "@/components/products/QuickViewModal";
 import { ToastContainer } from "@/components/ui/ToastContainer";
@@ -50,13 +51,15 @@ export default function RootLayout({
   return (
     <html lang="pl" suppressHydrationWarning data-scroll-behavior="smooth" className={`${playfair.variable} ${plusJakarta.variable}`}>
       <body className="min-h-screen flex flex-col font-sans bg-background text-foreground selection:bg-accent selection:text-accent-foreground transition-colors duration-300 antialiased">
-        <ShopProvider>
-          {children}
-          <CartDrawer />
-          <QuickViewModal />
-          <ToastContainer />
-          <FloatingContactButton />
-        </ShopProvider>
+        <AuthProvider>
+          <ShopProvider>
+            {children}
+            <CartDrawer />
+            <QuickViewModal />
+            <ToastContainer />
+            <FloatingContactButton />
+          </ShopProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -2,7 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { useId } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import {
   CheckCircle2,
   ArrowRight,
@@ -10,26 +11,20 @@ import {
   Truck,
   Mail,
   Sparkles,
+  UserCircle,
 } from "lucide-react";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
+import { useAuth } from "@/context/AuthContext";
 import { motion } from "framer-motion";
 
 /* ─────────── strona ─────────── */
 
-export default function OrderConfirmationPage() {
-  const reactId = useId();
+function OrderConfirmationContent() {
+  const searchParams = useSearchParams();
+  const { zalogowany } = useAuth();
 
-  // Generuj unikalny numer zamówienia na podstawie useId (stabilny, bezpieczny dla SSR)
-  const numerZamowienia = React.useMemo(() => {
-    const data = new Date();
-    const rok = data.getFullYear();
-    const dzien = String(data.getDate()).padStart(2, "0");
-    const miesiac = String(data.getMonth() + 1).padStart(2, "0");
-    // useId zwraca unikalny identyfikator — wycinamy cyfry i bierzemy 4 znaki
-    const idPart = reactId.replace(/[^a-zA-Z0-9]/g, "").slice(0, 4).toUpperCase();
-    return `LUX-${rok}${miesiac}${dzien}-${idPart}`;
-  }, [reactId]);
+  const numerZamowienia = searchParams.get("nr") || "LUX-UNKNOWN";
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -41,7 +36,12 @@ export default function OrderConfirmationPage() {
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", damping: 15, stiffness: 200, delay: 0.1 }}
+            transition={{
+              type: "spring",
+              damping: 15,
+              stiffness: 200,
+              delay: 0.1,
+            }}
             className="relative mx-auto"
           >
             {/* Pierścień zewnętrzny */}
@@ -87,7 +87,7 @@ export default function OrderConfirmationPage() {
             </h1>
 
             <p className="text-sm text-muted-foreground font-light leading-relaxed max-w-sm mx-auto">
-              Twoje zamówienie zostało przyjęte do realizacji. Wkrótce otrzymasz
+              Twoje zamówienie zostało przyjęte do realizacji. Wkróto otrzymasz
               e-mail z potwierdzeniem i numerem przesyłki.
             </p>
           </motion.div>
@@ -154,8 +154,8 @@ export default function OrderConfirmationPage() {
                   1
                 </span>
                 <span>
-                  Na adres <strong className="text-foreground">{`{Twój e-mail}`}</strong> wyślemy
-                  potwierdzenie z numerem śledzenia przesyłki.
+                  Na adres e-mail wyślemy potwierdzenie z numerem śledzenia
+                  przesyłki.
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -163,7 +163,8 @@ export default function OrderConfirmationPage() {
                   2
                 </span>
                 <span>
-                  Kurier dostarczy paczkę pod wskazany adres w ciągu 1–2 dni roboczych.
+                  Kurier dostarczy paczkę pod wskazany adres w ciągu 1–2 dni
+                  roboczych.
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -184,6 +185,15 @@ export default function OrderConfirmationPage() {
             transition={{ delay: 1.2, duration: 0.5 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2"
           >
+            {zalogowany && (
+              <Link
+                href="/account?zakladka=zamowienia"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-accent text-accent-foreground font-semibold text-xs tracking-[0.15em] uppercase flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-md"
+              >
+                <UserCircle className="w-4 h-4" />
+                Moje zamówienia
+              </Link>
+            )}
             <Link
               href="/shop"
               className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs tracking-[0.15em] uppercase flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-md"
@@ -203,5 +213,23 @@ export default function OrderConfirmationPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function OrderConfirmationPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="grow flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+          </main>
+          <Footer />
+        </div>
+      }
+    >
+      <OrderConfirmationContent />
+    </Suspense>
   );
 }

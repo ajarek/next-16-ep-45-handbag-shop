@@ -23,12 +23,14 @@ import {
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
 import { useShop } from "@/context/ShopContext";
+import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/lib/utils";
 import {
   shippingSchema,
   blikCodeSchema,
   type PaymentMethod,
 } from "@/lib/validation/checkout";
+import { zapiszZamowienie, type ZamowienieFirestore } from "@/lib/firebase/services";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ─────────── stałe ─────────── */
@@ -74,12 +76,8 @@ const etapy = ["Dane dostawy", "Płatność", "Podsumowanie"];
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const {
-    cart,
-    cartTotal,
-    clearCart,
-    showToast,
-  } = useShop();
+  const { cart, cartTotal, clearCart, showToast } = useShop();
+  const { uzytkownik } = useAuth();
 
   const [etap, setEtap] = useState(0);
   const [ładuje, setŁaduje] = useState(false);
@@ -113,7 +111,7 @@ export default function CheckoutPage() {
     return `${daneDostawy.ulica}, ${daneDostawy.kodPocztowy} ${daneDostawy.miasto}`;
   }, [daneDostawy]);
 
-  /* ─── Nawigacjaetween etapami ─── */
+  /* ─── Nawigacja między etapami ─── */
 
   const walidujDaneDostawy = (): boolean => {
     const wynik = shippingSchema.safeParse(daneDostawy);
@@ -151,18 +149,65 @@ export default function CheckoutPage() {
     if (etap > 0) setEtap(etap - 1);
   };
 
-  const zatwierdz = () => {
+  const zatwierdz = async () => {
     setŁaduje(true);
 
-    // Symulacja przetwarzania płatności
-    setTimeout(() => {
+    try {
+      // Generuj numer zamówienia
+      const data = new Date();
+      const rok = data.getFullYear();
+      const miesiac = String(data.getMonth() + 1).padStart(2, "0");
+      const dzien = String(data.getDate()).padStart(2, "0");
+      const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+      const numerZamowienia = `LUX-${rok}${miesiac}${dzien}-${randomPart}`;
+
+      // Przygotuj dane zamówienia
+      const zamowienieDane: ZamowienieFirestore = {
+        id: "",
+        uzytkownikId: uzytkownik?.uid || "",
+        produkty: cart.map((item) => ({
+          produktId: item.product.id,
+          nazwa: item.product.name,
+          kolor: item.selectedColor.name,
+          ilosc: item.quantity,
+          cena: item.product.price,
+          obrazek: item.product.images[0],
+        })),
+        dostawa: {
+          imie: daneDostawy.imie,
+          nazwisko: daneDostawy.nazwisko,
+          email: daneDostawy.email,
+          telefon: daneDostawy.telefon,
+          ulica: daneDostawy.ulica,
+          kodPocztowy: daneDostawy.kodPocztowy,
+          miasto: daneDostawy.miasto,
+          uwagi: daneDostawy.uwagi || "",
+        },
+        metodaPlatnosci: metodaPlatnosci as string,
+        wartoscProduktow: cartTotal,
+        kosztDostawy: kosztDostawy,
+        razem: suma,
+        status: "oczekujące",
+        numerZamowienia,
+        dataZlozenia: new Date().toISOString(),
+      };
+
+      // Zapisz do Firestore
+      await zapiszZamowienie(zamowienieDane);
+
+      // Wyczyść koszyk
       clearCart();
+
+      // Przekieruj do potwierdzenia z numerem zamówienia
+      router.push(`/checkout/potwierdzenie?nr=${numerZamowienia}`);
+    } catch (error) {
+      console.error("Błąd zapisywania zamówienia:", error);
+      showToast("Wystąpił błąd podczas zapisywania zamówienia. Spróbuj ponownie.", "info");
       setŁaduje(false);
-      router.push("/checkout/potwierdzenie");
-    }, 2000);
+    }
   };
 
-  /* ─── Pusta途 → przekierowanie ─── */
+  /* ─── Pusty koszyk → przekierowanie ─── */
 
   if (cart.length === 0 && !ładuje) {
     return (
@@ -614,6 +659,15 @@ export default function CheckoutPage() {
                           ))}
                         </div>
                       </div>
+
+                      {/* Info o koncie */}
+                      {uzytkownik && (
+                        <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50">
+                          <p className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">
+                            Zamówienie zostanie powiązane z Twoim kontem. Historia zamówień dostępna w sekcji „Moje konto”.
+                          </p>
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -675,7 +729,8 @@ export default function CheckoutPage() {
                   <div className="p-6 rounded-2xl bg-card border border-border space-y-4">
                     <h3 className="font-serif text-sm font-semibold text-foreground flex items-center gap-2">
                       <Package className="w-4 h-4 text-accent" />
-                      Twoje zamówienie ({liczbaSztuk} {liczbaSztuk === 1 ? "produkt" : "produkty"})
+                      Twoje zamówienie ({liczbaSztuk}{" "}
+                      {liczbaSztuk === 1 ? "produkt" : "produkty"})
                     </h3>
 
                     <div className="space-y-3 max-h-64 overflow-y-auto">
