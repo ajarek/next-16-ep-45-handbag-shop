@@ -32,6 +32,7 @@ import {
 } from "@/lib/validation/checkout";
 import { zapiszZamowienie, type ZamowienieFirestore } from "@/lib/firebase/services";
 import { motion, AnimatePresence } from "framer-motion";
+import { CheckoutAuthModal } from "@/components/checkout/CheckoutAuthModal";
 
 /* ─────────── stałe ─────────── */
 
@@ -81,6 +82,7 @@ export default function CheckoutPage() {
 
   const [etap, setEtap] = useState(0);
   const [ładuje, setŁaduje] = useState(false);
+  const [pokazModalLogowania, setPokazModalLogowania] = useState(false);
 
   // Dane formularza
   const [daneDostawy, setDaneDostawy] = useState({
@@ -149,7 +151,7 @@ export default function CheckoutPage() {
     if (etap > 0) setEtap(etap - 1);
   };
 
-  const zatwierdz = async () => {
+  const wykonajZamowienie = async () => {
     setŁaduje(true);
 
     try {
@@ -205,6 +207,14 @@ export default function CheckoutPage() {
       showToast("Wystąpił błąd podczas zapisywania zamówienia. Spróbuj ponownie.", "info");
       setŁaduje(false);
     }
+  };
+
+  const zatwierdz = () => {
+    if (!uzytkownik) {
+      setPokazModalLogowania(true);
+      return;
+    }
+    wykonajZamowienie();
   };
 
   /* ─── Pusty koszyk → przekierowanie ─── */
@@ -641,6 +651,7 @@ export default function CheckoutPage() {
                                   src={item.product.images[0]}
                                   alt={item.product.name}
                                   fill
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                   className="object-cover"
                                 />
                               </div>
@@ -744,6 +755,7 @@ export default function CheckoutPage() {
                               src={item.product.images[0]}
                               alt={item.product.name}
                               fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               className="object-cover"
                             />
                             <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 bg-primary text-primary-foreground text-[9px] font-bold rounded-full flex items-center justify-center">
@@ -823,8 +835,19 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  {/* Logo LUXÉ */}
-                  <div className="text-center pt-2">
+              {/* Modal logowania */}
+              <CheckoutAuthModal
+                otwarty={pokazModalLogowania}
+                onClose={() => setPokazModalLogowania(false)}
+                poZalogowaniu={() => {
+                  setPokazModalLogowania(false);
+                  // Po zalogowaniu automatycznie zatwierdź zamówienie
+                  wykonajZamowienie();
+                }}
+              />
+
+              {/* Logo LUXÉ */}
+              <div className="text-center pt-2">
                     <div className="inline-flex items-center gap-2 text-accent">
                       <Sparkles className="w-3.5 h-3.5" />
                       <span className="text-[10px] uppercase tracking-[0.3em] font-semibold">

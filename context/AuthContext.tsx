@@ -14,6 +14,7 @@ import {
 } from "firebase/auth";
 import { auth, db } from "@/lib/firebase/config";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { setAuthCookie, clearAuthCookie } from "@/lib/auth/cookie";
 
 export interface UserProfile {
   uid: string;
@@ -85,14 +86,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     []
   );
 
-  // Nasłuchiwanie stanu autoryzacji
+  // Nasłuchiwanie stanu autoryzacji + synchronizacja ciasteczka
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUzytkownik(user);
       if (user) {
+        setAuthCookie(user.uid);
         const profilDane = await pobierzProfil(user.uid);
         setProfil(profilDane);
       } else {
+        clearAuthCookie();
         setProfil(null);
       }
       setLaduje(false);
@@ -133,6 +136,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Wylogowanie
   const wylogowanie = useCallback(async () => {
+    clearAuthCookie();
     await signOut(auth);
     setProfil(null);
   }, []);

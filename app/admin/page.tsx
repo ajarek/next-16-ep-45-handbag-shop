@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Package,
   Trash2,
+  ShoppingCart,
 } from "lucide-react";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
@@ -25,6 +26,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { motion } from "framer-motion";
+import { AdminOrders } from "@/components/admin/AdminOrders";
 import type { Product } from "@/lib/types";
 
 interface LogWIadomosci {
@@ -38,6 +40,7 @@ export default function AdminPage() {
   const { zalogowany, isAdmin, laduje: authLaduje } = useAuth();
 
   const [laduje, setLaduje] = useState(false);
+  const [aktywnaZakladka, setAktywnaZakladka] = useState<"dane" | "zamowienia">("dane");
   const [logi, setLogi] = useState<LogWIadomosci[]>([]);
   const [produktowImportowano, setProduktowImportowano] = useState(0);
   const [usunietoProduktow, setUsunietoProduktow] = useState(0);
@@ -189,8 +192,42 @@ export default function AdminPage() {
           </div>
         </section>
 
+        {/* Zakładki */}
+        <section className="border-b border-border bg-background transition-colors duration-300">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-1">
+              {([
+                { id: "dane" as const, nazwa: "Zarządzanie danymi", ikona: Database },
+                { id: "zamowienia" as const, nazwa: "Zamówienia", ikona: ShoppingCart },
+              ]).map((zakladka) => {
+                const Icon = zakladka.ikona;
+                const aktywna = aktywnaZakladka === zakladka.id;
+                return (
+                  <button
+                    key={zakladka.id}
+                    onClick={() => setAktywnaZakladka(zakladka.id)}
+                    className={`flex items-center gap-2 px-5 py-3.5 text-xs font-semibold tracking-wide transition-colors border-b-2 -mb-px ${
+                      aktywna
+                        ? "border-accent text-accent"
+                        : "border-transparent text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {zakladka.nazwa}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
         {/* Zawartość */}
-        <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          {/* ── Zakładka: Zamówienia ── */}
+          {aktywnaZakladka === "zamowienia" && <AdminOrders />}
+
+          {/* ── Zakładka: Zarządzanie danymi ── */}
+          {aktywnaZakladka === "dane" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* ── Seed produktów ── */}
             <div className="p-6 rounded-2xl bg-card border border-border space-y-4">
@@ -293,9 +330,10 @@ export default function AdminPage() {
               )}
             </div>
           </div>
+          )}
 
           {/* ── Logi ── */}
-          {logi.length > 0 && (
+          {aktywnaZakladka === "dane" && logi.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}

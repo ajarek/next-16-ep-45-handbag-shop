@@ -8,6 +8,7 @@ import {
   query,
   where,
   limit,
+  orderBy,
   serverTimestamp,
   arrayUnion,
   arrayRemove,
@@ -160,6 +161,30 @@ export async function pobierzZamowienie(
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) return null;
   return { id: docSnap.id, ...docSnap.data() } as ZamowienieFirestore;
+}
+
+/** Pobierz wszystkie zamówienia (panel admin) — posortowane od najnowszych */
+export async function pobierzWszystkieZamowienia(): Promise<ZamowienieFirestore[]> {
+  const q = query(
+    collection(db, "zamowienia"),
+    orderBy("data", "desc")
+  );
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(
+    (d) => ({ id: d.id, ...d.data() }) as ZamowienieFirestore
+  );
+}
+
+/** Aktualizuj status zamówienia (panel admin) */
+export async function zaktualizujStatusZamowienia(
+  zamowienieId: string,
+  nowyStatus: ZamowienieFirestore["status"]
+): Promise<void> {
+  const docRef = doc(db, "zamowienia", zamowienieId);
+  await updateDoc(docRef, {
+    status: nowyStatus,
+    dataAktualizacjiStatusu: serverTimestamp(),
+  });
 }
 
 /* ─────────── Lista życzeń (Wishlist) ─────────── */
