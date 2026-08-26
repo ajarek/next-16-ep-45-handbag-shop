@@ -159,5 +159,31 @@
     "dimensions": "21 x 13 x 5 cm",
     "inStock": true,
     "featured": false
+  },
+  {
+    "id": "luxe-07",
+    "name": "LOULOU mała z pikowanej skóry jagnięcej",
+    "slug": "loulou",
+    "category": "z-klapka",
+    "categoryName": "Torebki z klapką",
+    "price": 1490,
+    "originalPrice": 1550,
+    "rating": 4.91,
+    "reviewsCount": 15,
+    "images": [
+      "/images/loulou.jpg",
+      "/images/loulou-1.jpg"
+    ],
+    "colors": [
+      { "name": "Czysta biel", "hex": "#ffffff" },
+      { "name": "Złocisty beż", "hex": "#e0c9a6" }
+    ],
+    "tags": ["Nowość"],
+    "style": "Na wieczór",
+    "description": "Torebka na łańcuszku z miękkiej skóry jagnięcej z pikowaniem w jodełkę.",
+    "material": "Gładka satynowa skóra jagnięca",
+    "dimensions": "24 x 14 x 6 cm",
+    "inStock": true,
+    "featured": false
   }
 ]

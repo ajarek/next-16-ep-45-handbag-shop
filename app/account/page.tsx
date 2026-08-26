@@ -33,6 +33,7 @@ import {
 } from "@/lib/firebase/services";
 import { formatPrice } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { Product } from "@/lib/types";
 
 type Zakladka = "profil" | "zamowienia" | "wishlist";
 
@@ -53,10 +54,11 @@ const statusIkona: Record<string, React.ReactNode> = {
 export default function AccountPage() {
   const router = useRouter();
   const { uzytkownik, profil, laduje: authLaduje, wylogowanie, zaktualizujProfil } = useAuth();
-  const { wishlist, showToast } = useShop();
+  const { wishlist, showToast, toggleWishlist, setQuickViewProduct } = useShop();
 
   const [zakladka, setZakladka] = useState<Zakladka>("profil");
   const [zamowienia, setZamowienia] = useState<ZamowienieFirestore[]>([]);
+  const [produkty, setProdukty] = useState<Product[]>([]);
 
   const [laduje, setLaduje] = useState(true);
   const [edycja, setEdycja] = useState(false);
@@ -82,11 +84,13 @@ export default function AccountPage() {
     const pobierz = async () => {
       setLaduje(true);
       try {
-        const [zam] = await Promise.all([
+        const [zam, , prodRes] = await Promise.all([
           pobierzZamowieniaUzytkownika(uzytkownik.uid),
           pobierzWishlist(uzytkownik.uid),
+          fetch("/data/products.json").then((r) => r.json() as Promise<Product[]>),
         ]);
         setZamowienia(zam);
+        setProdukty(prodRes);
       } catch (error) {
         console.error("Błąd pobierania danych:", error);
       } finally {
@@ -527,20 +531,98 @@ export default function AccountPage() {
                         </Link>
                       </div>
                     ) : (
-                      <div className="p-5 rounded-2xl bg-card border border-border">
-                        <p className="text-xs text-muted-foreground mb-4">
-                          {wishlist.length}{" "}
-                          {wishlist.length === 1
-                            ? "produkt"
-                            : wishlist.length < 5
-                              ? "produkty"
-                              : "produktów"}{" "}
-                          na liście życzeń
-                        </p>
-                        <p className="text-xs text-muted-foreground font-light">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-muted-foreground">
+                            {wishlist.length}{" "}
+                            {wishlist.length === 1
+                              ? "produkt"
+                              : wishlist.length < 5
+                                ? "produkty"
+                                : "produktów"}{" "}
+                            na liście życzeń
+                          </p>
+                        </div>
+
+                        {/* Karty produktów na liście życzeń */}
+                        {produkty
+                          .filter((p) => wishlist.includes(p.id))
+                          .map((produkt) => (
+                            <div
+                              key={produkt.id}
+                              className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-colors"
+                            >
+                              {/* Zdjęcie produktu */}
+                              <button
+                                onClick={() => setQuickViewProduct(produkt)}
+                                className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-secondary shrink-0 border border-border"
+                              >
+                                <Image
+                                  src={produkt.images[0]}
+                                  alt={produkt.name}
+                                  fill
+                                  sizes="(max-width: 640px) 80px, 96px"
+                                  className="object-cover"
+                                />
+                              </button>
+
+                              {/* Informacje o produkcie */}
+                              <div className="flex-1 min-w-0 space-y-1">
+                                <button
+                                  onClick={() => setQuickViewProduct(produkt)}
+                                  className="block text-sm font-medium text-foreground hover:text-accent transition-colors truncate text-left"
+                                >
+                                  {produkt.name}
+                                </button>
+                                <p className="text-[11px] text-muted-foreground">
+                                  {produkt.categoryName}
+                                </p>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-bold text-foreground">
+                                    {formatPrice(produkt.price)}
+                                  </span>
+                                  {produkt.originalPrice && (
+                                    <span className="text-xs text-muted-foreground line-through">
+                                      {formatPrice(produkt.originalPrice)}
+                                    </span>
+                                  )}
+                                </div>
+
+                                {/* Paleta kolorów */}
+                                <div className="flex items-center gap-1 pt-1">
+                                  {produkt.colors.map((kolor) => (
+                                    <span
+                                      key={kolor.name}
+                                      title={kolor.name}
+                                      className="w-3.5 h-3.5 rounded-full border border-border/60"
+                                      style={{ backgroundColor: kolor.hex }}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Akcje */}
+                              <div className="flex flex-col items-end gap-2 shrink-0">
+                                <button
+                                  onClick={() => toggleWishlist(produkt.id)}
+                                  className="p-2 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                                  title="Usuń z listy życzeń"
+                                >
+                                  <Heart className="w-4 h-4 fill-current" />
+                                </button>
+                                <button
+                                  onClick={() => setQuickViewProduct(produkt)}
+                                  className="px-3 py-1.5 rounded-lg bg-secondary text-foreground text-[10px] font-semibold uppercase tracking-wider border border-border hover:bg-accent hover:text-accent-foreground transition-colors"
+                                >
+                                  Zobacz
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+
+                        <p className="text-[10px] text-muted-foreground font-light pt-2">
                           Lista życzeń jest synchronizowana z Twoim kontem. Możesz
-                          przeglądać i usuwać produkty ze strony produktu lub
-                          koszyka.
+                          usuwać produkty klikając ikonę serca.
                         </p>
                       </div>
                     )}
