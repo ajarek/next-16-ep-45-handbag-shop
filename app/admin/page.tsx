@@ -13,6 +13,7 @@ import {
   Package,
   Trash2,
   ShoppingCart,
+  BarChart3,
 } from "lucide-react";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
@@ -27,6 +28,7 @@ import {
 } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { AdminOrders } from "@/components/admin/AdminOrders";
+import { AdminFinance } from "@/components/admin/AdminFinance";
 import type { Product } from "@/lib/types";
 
 interface LogWIadomosci {
@@ -40,7 +42,7 @@ export default function AdminPage() {
   const { zalogowany, isAdmin, laduje: authLaduje } = useAuth();
 
   const [laduje, setLaduje] = useState(false);
-  const [aktywnaZakladka, setAktywnaZakladka] = useState<"dane" | "zamowienia">("dane");
+  const [aktywnaZakladka, setAktywnaZakladka] = useState<"dane" | "zamowienia" | "finanse">("dane");
   const [logi, setLogi] = useState<LogWIadomosci[]>([]);
   const [produktowImportowano, setProduktowImportowano] = useState(0);
   const [usunietoProduktow, setUsunietoProduktow] = useState(0);
@@ -199,6 +201,7 @@ export default function AdminPage() {
               {([
                 { id: "dane" as const, nazwa: "Zarządzanie danymi", ikona: Database },
                 { id: "zamowienia" as const, nazwa: "Zamówienia", ikona: ShoppingCart },
+                { id: "finanse" as const, nazwa: "Finanse", ikona: BarChart3 },
               ]).map((zakladka) => {
                 const Icon = zakladka.ikona;
                 const aktywna = aktywnaZakladka === zakladka.id;
@@ -225,6 +228,9 @@ export default function AdminPage() {
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {/* ── Zakładka: Zamówienia ── */}
           {aktywnaZakladka === "zamowienia" && <AdminOrders />}
+
+          {/* ── Zakładka: Finanse ── */}
+          {aktywnaZakladka === "finanse" && <AdminFinance />}
 
           {/* ── Zakładka: Zarządzanie danymi ── */}
           {aktywnaZakladka === "dane" && (
@@ -260,7 +266,7 @@ export default function AdminPage() {
               <button
                 onClick={seedProduktow}
                 disabled={laduje}
-                className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary text-primary-foreground text-xs font-semibold tracking-[0.1em] uppercase hover:opacity-90 transition-opacity shadow-md disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary text-primary-foreground text-xs font-semibold tracking-widest uppercase hover:opacity-90 transition-opacity shadow-md disabled:opacity-50"
               >
                 {laduje ? (
                   <>

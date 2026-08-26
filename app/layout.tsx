@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Playfair_Display, Geist } from "next/font/google";
 import "./globals.css";
 import { ShopProvider } from "@/context/ShopContext";
 import { AuthProvider } from "@/context/AuthContext";
@@ -7,6 +7,7 @@ import { CartDrawer } from "@/components/navbar/CartDrawer";
 import { QuickViewModal } from "@/components/products/QuickViewModal";
 import { ToastContainer } from "@/components/ui/ToastContainer";
 import { FloatingContactButton } from "@/components/chat/FloatingContactButton";
+import { cn } from "@/lib/utils";
 
 const playfair = Playfair_Display({
   subsets: ["latin", "latin-ext"],
@@ -14,11 +15,7 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-sans",
-  display: "swap",
-});
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "LUXÉ BAGS | Torebki, które podkreślają Twój styl",
@@ -49,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl" suppressHydrationWarning data-scroll-behavior="smooth" className={`${playfair.variable} ${plusJakarta.variable}`}>
+    <html lang="pl" suppressHydrationWarning data-scroll-behavior="smooth" className={cn(playfair.variable, "font-sans", geist.variable)}>
       <body className="min-h-screen flex flex-col font-sans bg-background text-foreground selection:bg-accent selection:text-accent-foreground transition-colors duration-300 antialiased">
         <AuthProvider>
           <ShopProvider>
