@@ -1,25 +1,25 @@
-"use client";
+"use client"
 
-import React from "react";
-import { Navbar } from "@/components/navbar/Navbar";
-import { HeroSection } from "@/components/hero/HeroSection";
-import { CategoriesSection } from "@/components/categories/CategoriesSection";
-import { TrustBadges } from "@/components/sections/TrustBadges";
-import { BestsellersSection } from "@/components/products/BestsellersSection";
-import { StyleGuideSection } from "@/components/sections/StyleGuideSection";
-import { CraftsmanshipSection } from "@/components/sections/CraftsmanshipSection";
-import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
-import { NewsletterSection } from "@/components/sections/NewsletterSection";
-import { Footer } from "@/components/footer/Footer";
+import React from "react"
+import { Navbar } from "@/components/navbar/Navbar"
+import { HeroSection } from "@/components/hero/HeroSection"
+import { CategoriesSection } from "@/components/categories/CategoriesSection"
+import { TrustBadges } from "@/components/sections/TrustBadges"
+import { BestsellersSection } from "@/components/products/BestsellersSection"
+import { StyleGuideSection } from "@/components/sections/StyleGuideSection"
+import { CraftsmanshipSection } from "@/components/sections/CraftsmanshipSection"
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection"
+import { NewsletterSection } from "@/components/sections/NewsletterSection"
+import { Footer } from "@/components/footer/Footer"
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className='flex flex-col min-h-screen'>
       {/* Pasek nawigacji */}
       <Navbar />
 
       {/* Główna treść strony */}
-      <main className="grow">
+      <main className='grow'>
         {/* Sekcja Hero z interaktywnym shaderem WebGL i torebką na kamieniu */}
         <HeroSection />
 
@@ -48,5 +48,5 @@ export default function HomePage() {
       {/* Stopka sklepu */}
       <Footer />
     </div>
-  );
+  )
 }

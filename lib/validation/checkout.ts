@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod"
 
 /* ─────────── Etap 1: Dane dostawy ─────────── */
 
@@ -16,14 +16,19 @@ export const shippingSchema = z.object({
     .regex(/^\d{2}-\d{3}$/, "Kod pocztowy musi być w formacie XX-XXX"),
   miasto: z.string().min(2, "Wprowadź nazwę miasta"),
   uwagi: z.string().optional(),
-});
+})
 
-export type ShippingFormData = z.infer<typeof shippingSchema>;
+export type ShippingFormData = z.infer<typeof shippingSchema>
 
 /* ─────────── Etap 2: Metoda płatności ─────────── */
 
-export const paymentMethodSchema = z.enum(["blik", "karta", "payu", "apple_pay"]);
-export type PaymentMethod = z.infer<typeof paymentMethodSchema>;
+export const paymentMethodSchema = z.enum([
+  "blik",
+  "karta",
+  "payu",
+  "apple_pay",
+])
+export type PaymentMethod = z.infer<typeof paymentMethodSchema>
 
 /* ─────────── Etap 3: Kod BLIK (opcjonalny) ─────────── */
 
@@ -32,26 +37,26 @@ export const blikCodeSchema = z.object({
     .string()
     .length(6, "Kod BLIK musi składać się z 6 cyfr")
     .regex(/^\d{6}$/, "Kod BLIK musi składać się wyłącznie z cyfr"),
-});
+})
 
-export type BlikCodeData = z.infer<typeof blikCodeSchema>;
+export type BlikCodeData = z.infer<typeof blikCodeSchema>
 
 /* ─────────── Pełne zamówienie ─────────── */
 
 export interface Zamowienie {
-  id: string;
+  id: string
   produkty: {
-    nazwa: string;
-    kolor: string;
-    ilosc: number;
-    cena: number;
-    obrazek: string;
-  }[];
-  dostawa: ShippingFormData;
-  metodaPlatnosci: PaymentMethod;
-  wartoscProduktow: number;
-  kosztDostawy: number;
-  razem: number;
-  dataZlozenia: string;
-  status: "oczekujące" | "w realizacji" | "wysłane" | "dostarczone";
+    nazwa: string
+    kolor: string
+    ilosc: number
+    cena: number
+    obrazek: string
+  }[]
+  dostawa: ShippingFormData
+  metodaPlatnosci: PaymentMethod
+  wartoscProduktow: number
+  kosztDostawy: number
+  razem: number
+  dataZlozenia: string
+  status: "oczekujące" | "w realizacji" | "wysłane" | "dostarczone"
 }

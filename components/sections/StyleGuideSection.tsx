@@ -59,7 +59,7 @@ export function StyleGuideSection({
               className='group cursor-pointer relative h-80 rounded-2xl overflow-hidden shadow-md border border-border flex flex-col justify-end p-5'
             >
               {/* Zdjęcie tła */}
-              <Image  
+              <Image
                 src={item.image}
                 alt={item.title}
                 fill

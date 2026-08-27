@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import React, { useEffect, useRef } from "react";
-import { useShop } from "@/context/ShopContext";
+import React, { useEffect, useRef } from "react"
+import { useShop } from "@/context/ShopContext"
 
 export function HeroShader() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { theme } = useShop();
-  const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const { theme } = useShop()
+  const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 })
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const canvas = canvasRef.current
+    if (!canvas) return
 
-    const gl = canvas.getContext("webgl", { alpha: true, antialias: true });
-    if (!gl) return;
+    const gl = canvas.getContext("webgl", { alpha: true, antialias: true })
+    if (!gl) return
 
     // Kod shadera wierzchołków
     const vertexShaderSource = `
@@ -23,7 +23,7 @@ export function HeroShader() {
         v_uv = (a_position + 1.0) * 0.5;
         gl_Position = vec4(a_position, 0.0, 1.0);
       }
-    `;
+    `
 
     // Kod shadera fragmentów - delikatne gradienty, subtelna siatka i interaktywny spotlight
     const fragmentShaderSource = `
@@ -79,118 +79,116 @@ export function HeroShader() {
 
         gl_FragColor = vec4(finalColor, 1.0);
       }
-    `;
+    `
 
     const createShader = (type: number, source: string) => {
-      const shader = gl.createShader(type);
-      if (!shader) return null;
-      gl.shaderSource(shader, source);
-      gl.compileShader(shader);
+      const shader = gl.createShader(type)
+      if (!shader) return null
+      gl.shaderSource(shader, source)
+      gl.compileShader(shader)
       if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        gl.deleteShader(shader);
-        return null;
+        gl.deleteShader(shader)
+        return null
       }
-      return shader;
-    };
-
-    const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
-    const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
-    if (!vertexShader || !fragmentShader) return;
-
-    const program = gl.createProgram();
-    if (!program) return;
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      return;
+      return shader
     }
 
-    const positionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource)
+    const fragmentShader = createShader(
+      gl.FRAGMENT_SHADER,
+      fragmentShaderSource,
+    )
+    if (!vertexShader || !fragmentShader) return
+
+    const program = gl.createProgram()
+    if (!program) return
+    gl.attachShader(program, vertexShader)
+    gl.attachShader(program, fragmentShader)
+    gl.linkProgram(program)
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      return
+    }
+
+    const positionBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
     gl.bufferData(
       gl.ARRAY_BUFFER,
-      new Float32Array([
-        -1, -1,
-         1, -1,
-        -1,  1,
-        -1,  1,
-         1, -1,
-         1,  1,
-      ]),
-      gl.STATIC_DRAW
-    );
+      new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+      gl.STATIC_DRAW,
+    )
 
-    const positionLocation = gl.getAttribLocation(program, "a_position");
-    const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
-    const mouseLocation = gl.getUniformLocation(program, "u_mouse");
-    const timeLocation = gl.getUniformLocation(program, "u_time");
-    const darkLocation = gl.getUniformLocation(program, "u_dark");
+    const positionLocation = gl.getAttribLocation(program, "a_position")
+    const resolutionLocation = gl.getUniformLocation(program, "u_resolution")
+    const mouseLocation = gl.getUniformLocation(program, "u_mouse")
+    const timeLocation = gl.getUniformLocation(program, "u_time")
+    const darkLocation = gl.getUniformLocation(program, "u_dark")
 
-    let animationFrameId: number;
-    const startTime = performance.now();
+    let animationFrameId: number
+    const startTime = performance.now()
 
     const handleResize = () => {
-      const displayWidth = canvas.clientWidth;
-      const displayHeight = canvas.clientHeight;
+      const displayWidth = canvas.clientWidth
+      const displayHeight = canvas.clientHeight
 
       if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-        canvas.width = displayWidth;
-        canvas.height = displayHeight;
-        gl.viewport(0, 0, canvas.width, canvas.height);
+        canvas.width = displayWidth
+        canvas.height = displayHeight
+        gl.viewport(0, 0, canvas.width, canvas.height)
       }
-    };
+    }
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      mouseRef.current.targetX = Math.max(0, Math.min(1, x));
-      mouseRef.current.targetY = Math.max(0, Math.min(1, y));
-    };
+      const rect = canvas.getBoundingClientRect()
+      const x = (e.clientX - rect.left) / rect.width
+      const y = (e.clientY - rect.top) / rect.height
+      mouseRef.current.targetX = Math.max(0, Math.min(1, x))
+      mouseRef.current.targetY = Math.max(0, Math.min(1, y))
+    }
 
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove);
-    handleResize();
+    window.addEventListener("resize", handleResize)
+    window.addEventListener("mousemove", handleMouseMove)
+    handleResize()
 
     const render = () => {
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.08;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.08;
+      mouseRef.current.x +=
+        (mouseRef.current.targetX - mouseRef.current.x) * 0.08
+      mouseRef.current.y +=
+        (mouseRef.current.targetY - mouseRef.current.y) * 0.08
 
-      gl.useProgram(program);
-      gl.enableVertexAttribArray(positionLocation);
-      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+      gl.useProgram(program)
+      gl.enableVertexAttribArray(positionLocation)
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0)
 
-      const currentTime = (performance.now() - startTime) * 0.001;
-      gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-      gl.uniform2f(mouseLocation, mouseRef.current.x, mouseRef.current.y);
-      gl.uniform1f(timeLocation, currentTime);
-      gl.uniform1f(darkLocation, theme === "dark" ? 1.0 : 0.0);
+      const currentTime = (performance.now() - startTime) * 0.001
+      gl.uniform2f(resolutionLocation, canvas.width, canvas.height)
+      gl.uniform2f(mouseLocation, mouseRef.current.x, mouseRef.current.y)
+      gl.uniform1f(timeLocation, currentTime)
+      gl.uniform1f(darkLocation, theme === "dark" ? 1.0 : 0.0)
 
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
-      animationFrameId = requestAnimationFrame(render);
-    };
+      gl.drawArrays(gl.TRIANGLES, 0, 6)
+      animationFrameId = requestAnimationFrame(render)
+    }
 
-    render();
+    render()
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
-      gl.deleteProgram(program);
-      gl.deleteShader(vertexShader);
-      gl.deleteShader(fragmentShader);
-      gl.deleteBuffer(positionBuffer);
-    };
-  }, [theme]);
+      window.removeEventListener("resize", handleResize)
+      window.removeEventListener("mousemove", handleMouseMove)
+      cancelAnimationFrame(animationFrameId)
+      gl.deleteProgram(program)
+      gl.deleteShader(vertexShader)
+      gl.deleteShader(fragmentShader)
+      gl.deleteBuffer(positionBuffer)
+    }
+  }, [theme])
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none z-0"
-      aria-hidden="true"
+      className='absolute inset-0 w-full h-full pointer-events-none z-0'
+      aria-hidden='true'
     />
-  );
+  )
 }

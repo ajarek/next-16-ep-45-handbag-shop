@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import React from "react";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import React from "react"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+import { Suspense } from "react"
 import {
   CheckCircle2,
   ArrowRight,
@@ -12,26 +12,26 @@ import {
   Mail,
   Sparkles,
   UserCircle,
-} from "lucide-react";
-import { Navbar } from "@/components/navbar/Navbar";
-import { Footer } from "@/components/footer/Footer";
-import { useAuth } from "@/context/AuthContext";
-import { motion } from "framer-motion";
+} from "lucide-react"
+import { Navbar } from "@/components/navbar/Navbar"
+import { Footer } from "@/components/footer/Footer"
+import { useAuth } from "@/context/AuthContext"
+import { motion } from "framer-motion"
 
 /* ─────────── strona ─────────── */
 
 function OrderConfirmationContent() {
-  const searchParams = useSearchParams();
-  const { zalogowany } = useAuth();
+  const searchParams = useSearchParams()
+  const { zalogowany } = useAuth()
 
-  const numerZamowienia = searchParams.get("nr") || "LUX-UNKNOWN";
+  const numerZamowienia = searchParams.get("nr") || "LUX-UNKNOWN"
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className='flex flex-col min-h-screen'>
       <Navbar />
 
-      <main className="grow flex items-center justify-center py-12 sm:py-20">
-        <div className="max-w-lg mx-auto px-4 sm:px-6 text-center space-y-8">
+      <main className='grow flex items-center justify-center py-12 sm:py-20'>
+        <div className='max-w-lg mx-auto px-4 sm:px-6 text-center space-y-8'>
           {/* Animacja sukcesu */}
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
@@ -42,22 +42,22 @@ function OrderConfirmationContent() {
               stiffness: 200,
               delay: 0.1,
             }}
-            className="relative mx-auto"
+            className='relative mx-auto'
           >
             {/* Pierścień zewnętrzny */}
-            <div className="w-28 h-28 rounded-full bg-emerald-50 dark:bg-emerald-950/30 mx-auto flex items-center justify-center relative">
+            <div className='w-28 h-28 rounded-full bg-emerald-50 dark:bg-emerald-950/30 mx-auto flex items-center justify-center relative'>
               {/* Pierścień animowany */}
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.3, type: "spring", damping: 12 }}
-                className="absolute inset-0 rounded-full border-2 border-emerald-400/30"
+                className='absolute inset-0 rounded-full border-2 border-emerald-400/30'
               />
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.5, type: "spring", damping: 12 }}
-                className="absolute inset-2 rounded-full border border-emerald-400/20"
+                className='absolute inset-2 rounded-full border border-emerald-400/20'
               />
 
               <motion.div
@@ -65,7 +65,7 @@ function OrderConfirmationContent() {
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ delay: 0.4, type: "spring", damping: 10 }}
               >
-                <CheckCircle2 className="w-14 h-14 text-emerald-500 dark:text-emerald-400" />
+                <CheckCircle2 className='w-14 h-14 text-emerald-500 dark:text-emerald-400' />
               </motion.div>
             </div>
           </motion.div>
@@ -75,18 +75,18 @@ function OrderConfirmationContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.5 }}
-            className="space-y-3"
+            className='space-y-3'
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-[11px] uppercase tracking-[0.25em] font-semibold border border-emerald-200/50 dark:border-emerald-800/50">
-              <Sparkles className="w-3.5 h-3.5" />
+            <div className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-[11px] uppercase tracking-[0.25em] font-semibold border border-emerald-200/50 dark:border-emerald-800/50'>
+              <Sparkles className='w-3.5 h-3.5' />
               <span>ZAMÓWIENIE PRZYJĘTE</span>
             </div>
 
-            <h1 className="font-serif text-3xl sm:text-4xl text-foreground tracking-tight">
+            <h1 className='font-serif text-3xl sm:text-4xl text-foreground tracking-tight'>
               Dziękujemy za zamówienie!
             </h1>
 
-            <p className="text-sm text-muted-foreground font-light leading-relaxed max-w-sm mx-auto">
+            <p className='text-sm text-muted-foreground font-light leading-relaxed max-w-sm mx-auto'>
               Twoje zamówienie zostało przyjęte do realizacji. Wkróto otrzymasz
               e-mail z potwierdzeniem i numerem przesyłki.
             </p>
@@ -97,41 +97,41 @@ function OrderConfirmationContent() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.5 }}
-            className="p-6 rounded-2xl bg-card border border-border shadow-sm space-y-4"
+            className='p-6 rounded-2xl bg-card border border-border shadow-sm space-y-4'
           >
-            <div className="flex items-center justify-center gap-2 text-accent">
-              <Package className="w-4 h-4" />
-              <span className="text-xs font-semibold uppercase tracking-wider">
+            <div className='flex items-center justify-center gap-2 text-accent'>
+              <Package className='w-4 h-4' />
+              <span className='text-xs font-semibold uppercase tracking-wider'>
                 Numer zamówienia
               </span>
             </div>
 
-            <p className="font-mono text-2xl sm:text-3xl font-bold text-foreground tracking-wider">
+            <p className='font-mono text-2xl sm:text-3xl font-bold text-foreground tracking-wider'>
               {numerZamowienia}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border">
-              <div className="flex flex-col items-center gap-1.5">
-                <div className="w-8 h-8 rounded-lg bg-secondary text-accent flex items-center justify-center border border-border/50">
-                  <Mail className="w-4 h-4" />
+            <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border'>
+              <div className='flex flex-col items-center gap-1.5'>
+                <div className='w-8 h-8 rounded-lg bg-secondary text-accent flex items-center justify-center border border-border/50'>
+                  <Mail className='w-4 h-4' />
                 </div>
-                <p className="text-[10px] text-muted-foreground text-center">
+                <p className='text-[10px] text-muted-foreground text-center'>
                   Potwierdzenie na e-mail
                 </p>
               </div>
-              <div className="flex flex-col items-center gap-1.5">
-                <div className="w-8 h-8 rounded-lg bg-secondary text-accent flex items-center justify-center border border-border/50">
-                  <Package className="w-4 h-4" />
+              <div className='flex flex-col items-center gap-1.5'>
+                <div className='w-8 h-8 rounded-lg bg-secondary text-accent flex items-center justify-center border border-border/50'>
+                  <Package className='w-4 h-4' />
                 </div>
-                <p className="text-[10px] text-muted-foreground text-center">
+                <p className='text-[10px] text-muted-foreground text-center'>
                   Przygotowanie: 1–2 dni
                 </p>
               </div>
-              <div className="flex flex-col items-center gap-1.5">
-                <div className="w-8 h-8 rounded-lg bg-secondary text-accent flex items-center justify-center border border-border/50">
-                  <Truck className="w-4 h-4" />
+              <div className='flex flex-col items-center gap-1.5'>
+                <div className='w-8 h-8 rounded-lg bg-secondary text-accent flex items-center justify-center border border-border/50'>
+                  <Truck className='w-4 h-4' />
                 </div>
-                <p className="text-[10px] text-muted-foreground text-center">
+                <p className='text-[10px] text-muted-foreground text-center'>
                   Dostawa: 1–2 dni robocze
                 </p>
               </div>
@@ -143,14 +143,14 @@ function OrderConfirmationContent() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
-            className="p-5 rounded-2xl bg-secondary border border-border space-y-3"
+            className='p-5 rounded-2xl bg-secondary border border-border space-y-3'
           >
-            <h3 className="font-serif text-sm font-semibold text-foreground">
+            <h3 className='font-serif text-sm font-semibold text-foreground'>
               Co dalej?
             </h3>
-            <ul className="space-y-2 text-xs text-muted-foreground text-left">
-              <li className="flex items-start gap-2">
-                <span className="w-5 h-5 rounded-full bg-background text-accent flex items-center justify-center shrink-0 text-[10px] font-bold border border-border/50 mt-0.5">
+            <ul className='space-y-2 text-xs text-muted-foreground text-left'>
+              <li className='flex items-start gap-2'>
+                <span className='w-5 h-5 rounded-full bg-background text-accent flex items-center justify-center shrink-0 text-[10px] font-bold border border-border/50 mt-0.5'>
                   1
                 </span>
                 <span>
@@ -158,8 +158,8 @@ function OrderConfirmationContent() {
                   przesyłki.
                 </span>
               </li>
-              <li className="flex items-start gap-2">
-                <span className="w-5 h-5 rounded-full bg-background text-accent flex items-center justify-center shrink-0 text-[10px] font-bold border border-border/50 mt-0.5">
+              <li className='flex items-start gap-2'>
+                <span className='w-5 h-5 rounded-full bg-background text-accent flex items-center justify-center shrink-0 text-[10px] font-bold border border-border/50 mt-0.5'>
                   2
                 </span>
                 <span>
@@ -167,8 +167,8 @@ function OrderConfirmationContent() {
                   roboczych.
                 </span>
               </li>
-              <li className="flex items-start gap-2">
-                <span className="w-5 h-5 rounded-full bg-background text-accent flex items-center justify-center shrink-0 text-[10px] font-bold border border-border/50 mt-0.5">
+              <li className='flex items-start gap-2'>
+                <span className='w-5 h-5 rounded-full bg-background text-accent flex items-center justify-center shrink-0 text-[10px] font-bold border border-border/50 mt-0.5'>
                   3
                 </span>
                 <span>
@@ -183,27 +183,27 @@ function OrderConfirmationContent() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.5 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2"
+            className='flex flex-col sm:flex-row items-center justify-center gap-3 pt-2'
           >
             {zalogowany && (
               <Link
-                href="/account?zakladka=zamowienia"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-accent text-accent-foreground font-semibold text-xs tracking-[0.15em] uppercase flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-md"
+                href='/account?zakladka=zamowienia'
+                className='w-full sm:w-auto px-8 py-3.5 rounded-xl bg-accent text-accent-foreground font-semibold text-xs tracking-[0.15em] uppercase flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-md'
               >
-                <UserCircle className="w-4 h-4" />
+                <UserCircle className='w-4 h-4' />
                 Moje zamówienia
               </Link>
             )}
             <Link
-              href="/shop"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs tracking-[0.15em] uppercase flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-md"
+              href='/shop'
+              className='w-full sm:w-auto px-8 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs tracking-[0.15em] uppercase flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-md'
             >
               Kontynuuj zakupy
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className='w-4 h-4' />
             </Link>
             <Link
-              href="/"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-transparent hover:bg-secondary border border-border text-foreground font-semibold text-xs tracking-[0.15em] uppercase transition-colors flex items-center justify-center"
+              href='/'
+              className='w-full sm:w-auto px-8 py-3.5 rounded-xl bg-transparent hover:bg-secondary border border-border text-foreground font-semibold text-xs tracking-[0.15em] uppercase transition-colors flex items-center justify-center'
             >
               Strona główna
             </Link>
@@ -213,17 +213,17 @@ function OrderConfirmationContent() {
 
       <Footer />
     </div>
-  );
+  )
 }
 
 export default function OrderConfirmationPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex flex-col min-h-screen">
+        <div className='flex flex-col min-h-screen'>
           <Navbar />
-          <main className="grow flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+          <main className='grow flex items-center justify-center'>
+            <div className='w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin' />
           </main>
           <Footer />
         </div>
@@ -231,5 +231,5 @@ export default function OrderConfirmationPage() {
     >
       <OrderConfirmationContent />
     </Suspense>
-  );
+  )
 }
