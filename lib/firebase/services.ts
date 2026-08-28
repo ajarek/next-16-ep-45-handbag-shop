@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  deleteDoc,
   getDoc,
   getDocs,
   setDoc,
@@ -190,6 +191,25 @@ export async function zaktualizujStatusZamowienia(
     status: nowyStatus,
     dataAktualizacjiStatusu: serverTimestamp(),
   })
+}
+
+/** Usuń zamówienie (panel admin) — z dekrementacją liczbaSprzedanych */
+export async function usunZamowienie(
+  zamowienie: ZamowienieFirestore,
+): Promise<void> {
+  // Dekrementuj liczbę sprzedanych dla każdego produktu w zamówieniu
+  for (const produkt of zamowienie.produkty) {
+    const produktRef = doc(db, "produkty", produkt.produktId)
+    await updateDoc(produktRef, {
+      liczbaSprzedanych: increment(-produkt.ilosc),
+    }).catch(() => {
+      // Produkt może nie istnieć w Firestore — ignorujemy
+    })
+  }
+
+  // Usuń dokument zamówienia
+  const docRef = doc(db, "zamowienia", zamowienie.id)
+  await deleteDoc(docRef)
 }
 
 /* ─────────── Lista życzeń (Wishlist) ─────────── */

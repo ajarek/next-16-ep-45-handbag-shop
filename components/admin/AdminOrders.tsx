@@ -22,10 +22,13 @@ import {
   Mail,
   Phone,
   MessageSquare,
+  Trash2,
+  AlertTriangle,
 } from "lucide-react"
 import {
   pobierzWszystkieZamowienia,
   zaktualizujStatusZamowienia,
+  usunZamowienie,
   type ZamowienieFirestore,
 } from "@/lib/firebase/services"
 import { formatPrice } from "@/lib/utils"
@@ -84,6 +87,8 @@ export function AdminOrders() {
   )
   const [rozwiniete, setRozwiniete] = useState<Set<string>>(new Set())
   const [aktualizujace, setAktualizujace] = useState<Set<string>>(new Set())
+  const [usuwajace, setUsuwajace] = useState<string | null>(null)
+  const [potwierdzenieUsuniecia, setPotwierdzenieUsuniecia] = useState<ZamowienieFirestore | null>(null)
 
   const pobierzDane = useCallback(async () => {
     setLaduje(true)
@@ -152,6 +157,20 @@ export function AdminOrders() {
 
     return wynik
   }, [zamowienia, filtrStatusu, szukaj])
+
+  /* ─── Usuwanie zamówienia ─── */
+  const usunijZamowienie = async (zamowienie: ZamowienieFirestore) => {
+    setPotwierdzenieUsuniecia(null)
+    setUsuwajace(zamowienie.id)
+    try {
+      await usunZamowienie(zamowienie)
+      setZamowienia((prev) => prev.filter((z) => z.id !== zamowienie.id))
+    } catch {
+      setBlad("Nie udało się usunąć zamówienia.")
+    } finally {
+      setUsuwajace(null)
+    }
+  }
 
   /* ─── Zmiana statusu ─── */
   const zmienStatus = async (zamowienieId: string, nowyStatus: Status) => {
@@ -329,12 +348,86 @@ export function AdminOrders() {
               rozwiniete={rozwiniete.has(zamowienie.id)}
               naRozwinieciu={() => toggleRozwin(zamowienie.id)}
               naZmianeStatusu={zmienStatus}
+              naUsuniecie={setPotwierdzenieUsuniecia}
               aktualizujace={aktualizujace.has(zamowienie.id)}
+              usuwajace={usuwajace === zamowienie.id}
               formatujDate={formatujDate}
             />
           ))}
         </div>
       )}
+
+      {/* ─── Modal potwierdzenia usunięcia ─── */}
+      <AnimatePresence>
+        {potwierdzenieUsuniecia && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          >
+            {/* Tło overlay */}
+            <div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setPotwierdzenieUsuniecia(null)}
+            />
+
+            {/* Modal */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="relative w-full max-w-md p-6 rounded-2xl bg-card border border-border shadow-xl space-y-4"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
+                  <AlertTriangle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-serif text-base font-semibold text-foreground">
+                    Usuń zamówienie
+                  </h3>
+                  <p className="text-[11px] text-muted-foreground">
+                    Ta operacja jest nieodwracalna
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-sm text-muted-foreground font-light">
+                Czy na pewno chcesz usunąć zamówienie
+                <span className="font-mono font-medium text-foreground"> {" "}{potwierdzenieUsuniecia.numerZamowienia}</span>?
+                Liczba sprzedanych produktów zostanie automatycznie zmniejszona.
+              </p>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => setPotwierdzenieUsuniecia(null)}
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-secondary border border-border text-xs font-semibold text-foreground hover:bg-secondary/80 transition-colors"
+                >
+                  Anuluj
+                </button>
+                <button
+                  onClick={() => usunijZamowienie(potwierdzenieUsuniecia)}
+                  disabled={usuwajace !== null}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500 text-white text-xs font-semibold hover:bg-rose-600 transition-colors disabled:opacity-50"
+                >
+                  {usuwajace ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      Usuwanie...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Usuń zamówienie
+                    </>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ─── Podsumowanie ─── */}
       {!laduje && przefiltrowane.length > 0 && (
@@ -385,14 +478,18 @@ function ZamowienieCard({
   rozwiniete,
   naRozwinieciu,
   naZmianeStatusu,
+  naUsuniecie,
   aktualizujace,
+  usuwajace,
   formatujDate,
 }: {
   zamowienie: ZamowienieFirestore
   rozwiniete: boolean
   naRozwinieciu: () => void
   naZmianeStatusu: (id: string, status: Status) => Promise<void>
+  naUsuniecie: (zamowienie: ZamowienieFirestore) => void
   aktualizujace: boolean
+  usuwajace: boolean
   formatujDate: (iso: string) => string
 }) {
   const statusInfo = STATUSY.find((s) => s.id === zamowienie.status)
@@ -410,9 +507,17 @@ function ZamowienieCard({
       className='rounded-2xl bg-card border border-border overflow-hidden'
     >
       {/* ─── Nagłówek karty ─── */}
-      <button
+      <div
+        role='button'
+        tabIndex={0}
         onClick={naRozwinieciu}
-        className='w-full p-4 sm:p-5 text-left flex items-center gap-4 hover:bg-secondary/30 transition-colors'
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            naRozwinieciu()
+          }
+        }}
+        className='w-full p-4 sm:p-5 text-left flex items-center gap-4 hover:bg-secondary/30 transition-colors cursor-pointer'
       >
         {/* Numer zamówienia */}
         <div className='flex-1 min-w-0 space-y-1'>
@@ -441,6 +546,23 @@ function ZamowienieCard({
           {formatPrice(zamowienie.razem)}
         </p>
 
+        {/* Przycisk usuwania */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            naUsuniecie(zamowienie)
+          }}
+          disabled={usuwajace}
+          className='shrink-0 p-2 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors disabled:opacity-50'
+          title='Usuń zamówienie'
+        >
+          {usuwajace ? (
+            <Loader2 className='w-4 h-4 animate-spin' />
+          ) : (
+            <Trash2 className='w-4 h-4' />
+          )}
+        </button>
+
         {/* Status badge */}
         <span
           className={`hidden sm:inline-flex px-2.5 py-1 rounded-lg text-[10px] font-semibold uppercase tracking-wider border ${statusInfo?.bg} ${statusInfo?.kolor}`}
@@ -454,7 +576,7 @@ function ZamowienieCard({
         ) : (
           <ChevronDown className='w-4 h-4 text-muted-foreground shrink-0' />
         )}
-      </button>
+      </div>
 
       {/* ─── Rozwinięta zawartość ─── */}
       <AnimatePresence>
