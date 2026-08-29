@@ -41,21 +41,32 @@ Projekt ekskluzywnego sklepu internetowego z torebkami damskimi w estetyce minim
 
 ## Uruchomienie Projektu
 
-1. Zainstaluj zależności:
+1.Utwórz folder .env i dodaj do niego klucze API:
+   ```bash
+NEXT_PUBLIC_FIREBASE_API_KEY=""
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=""
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=""
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=""
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=""
+NEXT_PUBLIC_FIREBASE_APP_ID=""
+NEXT_PUBLIC_ADMIN_EMAIL=""
+   ```
+2.Zainstaluj zależności:
    ```bash
    npm install
    ```
 
-2. Uruchom serwer deweloperski:
+3. Uruchom serwer deweloperski:
    ```bash
    npm run dev
+
    ```
+4. Otwórz [http://localhost:3000](http://localhost:3000) w przeglądarce.
 
-3. Otwórz [http://localhost:3000](http://localhost:3000) w przeglądarce.
-
-4. Kontrola jakości i budowanie:
+5. Kontrola jakości i budowanie:
    ```bash
    npx tsc --noEmit   # Sprawdzanie typów
    npm run lint       # Linter ESLint
    npm run build      # Produkcyjna kompilacja
+
    ```
